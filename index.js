@@ -22,9 +22,9 @@ app.get(
   }),
   (req, res) => {
     res.status(200).json({
-      "location": "section=property_details&page=3",
+      "location": "/info/1",
       "enabled": true,
-      "editing": false,
+      "finished": false,
       "codelist": {
         "amenities": [
           {
