@@ -87,7 +87,7 @@ var data = {
     "host": {
       "name": "Joe Doe",
       "email": "joe.doe@example.com",
-      "phone": "",
+      "phone": "(+55)12321312312",
       "contact": "",
       "alternative_contact": "",
       "minimum_nightly_price": "",
