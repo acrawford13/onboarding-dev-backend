@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const { Map, List } = require('immutable');
 
 const { errorHandling, originValidation } = require('./src/middlewares');
 
@@ -18,14 +19,25 @@ app.use(cors({ origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE'] }))
 app.get(
   '/onboarding/v1/onboardings/:uiid',
   (req, res) => {
-    res.status(200).json(data);
+    console.log('>>>> Get all for: ', req.params);
+    res.status(200).json(data.toJS());
   }
 );
 
 app.put(
   '/onboarding/v1/onboardings/:uiid/location', (req, res) => {
-    data.location = req.body.location;
+    console.log('>>>> Update location', req.body.location);
+    data = data.setIn('location', req.body.location);
     res.status(200).json({ location: req.body.location });
+  })
+
+app.put(
+  '/onboarding/v1/onboardings/:uiid', (req, res) => {
+    const { field } = req.body;
+    const path = ['data'].concat(field.resource.split('.'), field.column);
+    console.log('>>>> Update field', req.body, path);
+    data = data.setIn(path, field.value);
+    res.status(200).json({ field });
   })
 app.use(errorHandling);
 
@@ -33,7 +45,7 @@ app.listen(PORT, HOST, () => {
   console.log(`Server listing on ${HOST}:${PORT}`);
 });
 
-var data = {
+var data = Map({
   "location": "/info/1",
   "enabled": true,
   "finished": false,
@@ -83,22 +95,22 @@ var data = {
       }
     ]
   },
-  "data": {
-    "host": {
+  "data": Map({
+    "host": Map({
       "name": "Joe Doe",
       "email": "joe.doe@example.com",
-      "phone": "(+55)12321312312",
+      "phone": "+1671991501289",
       "contact": "",
       "alternative_contact": "",
       "minimum_nightly_price": "",
       "observations": "",
-      "bank_details": {
+      "bank_details": Map({
         "country": "uk",
         "account_number": "123456",
         "swift": "222333"
-      }
-    },
-    "property": {
+      })
+    }),
+    "property": Map({
       "property_type": "flat",
       "residency_type": "",
       "property_type_observations": "",
@@ -136,7 +148,7 @@ var data = {
       "bedrooms_observations": "",
       "bathrooms_instructions": "",
       "bathrooms_observations": "",
-      "beds": [
+      "beds": List([
         {
           "location": "Bedroom One",
           "count": 1,
@@ -147,8 +159,8 @@ var data = {
           "count": 2,
           "type": "single_bed"
         }
-      ],
-      "bathrooms": [
+      ]),
+      "bathrooms": List([
         {
           "shower": true,
           "bathtub": false,
@@ -161,8 +173,8 @@ var data = {
           "toilet": true,
           "hairdryer": false
         }
-      ],
-      "amenities": [
+      ]),
+      "amenities": List([
         {
           "amenity_id": 155,
           "property_amenity_id": 1,
@@ -175,8 +187,8 @@ var data = {
           "kind": "",
           "description": ""
         }
-      ],
-      "maintenance": {
+      ]),
+      "maintenance": Map({
         "waste_disposal_directions": "",
         "cleaning_instructions": "",
         "extra_linen_place": "",
@@ -187,8 +199,8 @@ var data = {
         "heating_control_location": "",
         "internal_keys": true,
         "observations": ""
-      },
-      "aditional_infos": {
+      }),
+      "aditional_infos": Map({
         "rules": "",
         "children_friendly": true,
         "infant_friendly": true,
@@ -198,12 +210,12 @@ var data = {
         "letterbox_access": true,
         "posts_location": "",
         "aditional_observations": ""
-      },
-      "nearby": {
+      }),
+      "nearby": Map({
         "supermarkets_and_shops": "",
         "cafe_or_restaurant": "",
         "points_of_interest": ""
-      }
-    }
-  }
-};
+      })
+    })
+  })
+});
