@@ -23,13 +23,6 @@ app.get(
 );
 
 app.put(
-  '/onboarding/v1/onboardings/:uiid',
-  (req, res) => {
-    res.status(200).json(data);
-  }
-);
-
-app.put(
   '/onboarding/v1/onboardings/:uiid/location', (req, res) => {
     data.location = req.body.location;
     res.status(200).json({ location: req.body.location });
