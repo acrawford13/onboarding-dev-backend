@@ -47,7 +47,7 @@ app.listen(PORT, HOST, () => {
 
 
 
-var data = {
+var data = Map({
   "current_location": "/info/1",
   "enabled": true,
   "codelist": {
@@ -694,8 +694,8 @@ var data = {
       "commom spaces"
     ]
   },
-  "data": {
-    "host": {
+  "data": Map({
+    "host": Map({
       "name": "Joe Doe",
       "email": "joe.doe@example.com",
       "phone": "+420 776 182 312",
@@ -703,9 +703,13 @@ var data = {
       "alternative_contact": null,
       "minimum_nightly_price": null,
       "host_info_observation": null,
-      "bank_details": {}
-    },
-    "property": {
+      "bank_details": Map({
+        "country": "uk",
+        "account_number": "123456",
+        "swift": "222333"
+      })
+    }),
+    "property": Map({
       "id": 9,
       "property_type": "flat",
       "personal_residency": false,
@@ -754,10 +758,10 @@ var data = {
       "heating_and_cooling_observation": null,
       "kitchen_appliances_observation": "Odit quia aut nihil amet animi nobis quasi est.",
       "kitchen_amenities_observation": "Debitis eos rerum nemo et placeat ut et.",
-      "beds": [],
-      "bathrooms": [],
-      "property_amenities": [],
-      "additional_infos": {
+      "beds": List([]),
+      "bathrooms": List([]),
+      "property_amenities": List([]),
+      "additional_infos": Map({
         "specific_rules": "No smoking",
         "children_friendly": true,
         "infant_friendly": true,
@@ -769,8 +773,8 @@ var data = {
         "additional_observation": "Nothing",
         "guest_approval": false,
         "supplied_key_guestready": false
-      },
-      "maintenance": {
+      }),
+      "maintenance": Map({
         "id": 9,
         "waste_disposal_direction": "Outside",
         "cleaning_instruction": "Eum quo sequi debitis quis vitae.",
@@ -789,14 +793,14 @@ var data = {
         "cleaning_products_observation": "In ipsum incidunt voluptas consectetur nihil velit.",
         "internal_keys_description": null,
         "maintenance_observation": null
-      },
-      "nearby": {
+      }),
+      "nearby": Map({
         "supermarkets_and_shops": "Albert",
         "cafe_or_restaurant": "Ubulinu",
         "points_of_interest": "Park",
         "observation": "Some observation"
-      }
-    }
-  },
+      })
+    })
+  }),
   "status": "opened"
-};
+});
