@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const { Map, List } = require('immutable');
 
 const { errorHandling, originValidation } = require('./src/middlewares');
 
@@ -18,22 +19,26 @@ app.use(cors({ origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE'] }))
 app.get(
   '/onboarding/v1/onboardings/:uiid',
   (req, res) => {
-    res.status(200).json(data);
+    console.log('>>>> Get all for: ', req.params);
+    res.status(200).json(data.toJS());
   }
 );
 
 app.put(
   '/onboarding/v1/onboardings/:uiid/location', (req, res) => {
-    data.location = req.body.location;
+    console.log('>>>> Update location', req.body.location);
+    data = data.setIn('location', req.body.location);
     res.status(200).json({ location: req.body.location });
   })
 
 app.put(
-  '/onboarding/v1/onboardings/:uiid/finish', (req, res) => {
-    data.status = "finished";
-    res.status(200).json('ok');
+  '/onboarding/v1/onboardings/:uiid', (req, res) => {
+    const { field } = req.body;
+    const path = ['data'].concat(field.resource.split('.'), field.column);
+    console.log('>>>> Update field', req.body, path);
+    data = data.setIn(path, field.value);
+    res.status(200).json({ field });
   })
-
 app.use(errorHandling);
 
 app.listen(PORT, HOST, () => {
