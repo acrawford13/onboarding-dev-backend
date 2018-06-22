@@ -48,7 +48,7 @@ app.listen(PORT, HOST, () => {
 
 
 var data = Map({
-  "current_location": "/info/1",
+  "location": "/info/1",
   "enabled": true,
   "codelist": {
     "amenities": [{
@@ -703,11 +703,12 @@ var data = Map({
       "alternative_contact": null,
       "minimum_nightly_price": null,
       "host_info_observation": null,
-      "bank_details": Map({
-        "country": "uk",
+      "bank_details": {
+        "country": "uk", 
         "account_number": "123456",
-        "swift": "222333"
-      })
+        "swift": "222333",
+        "observation":"",
+      }
     }),
     "property": Map({
       "id": 9,
@@ -737,6 +738,7 @@ var data = Map({
       "parking_nearby": false,
       "transport_observation": null,
       "size": "150m2",
+      "max_guest_number": 8,
       "size_observation": "Eius similique impedit ipsam sit beatae.",
       "wifi_name": "Tiger",
       "wifi_password": "UmUtNpC84rXtQ9Xa",
