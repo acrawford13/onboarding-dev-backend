@@ -721,28 +721,29 @@ let data = Map({
       "heating_and_cooling_observation": null,
       "kitchen_appliances_observation": "Odit quia aut nihil amet animi nobis quasi est.",
       "kitchen_amenities_observation": "Debitis eos rerum nemo et placeat ut et.",
-      "bedrooms_count": 0,
-      // "beds": List([
-      //   Map({
-      //     id: 1,
-      //     "location": "bedroom 1",
-      //     "count": 1,
-      //     "name": "queen_bed"
-      //   }),
-      //   Map({
-      //     id: 2,
-      //     "location": "bedroom 1",
-      //     "count": 2,
-      //     "name": "king_bed"
-      //   }),
-      //   Map({
-      //     id: 3,
-      //     "location": "bedroom 2",
-      //     "count": 2,
-      //     "name": "single_bed"
-      //   })
-      // ]),
-      "beds": List([]),
+      "bedrooms_count": 2,
+      "beds": List([
+        Map({
+          id: 1,
+          "location": "bedroom 1",
+          "count": 1,
+          "name": "queen_bed"
+        }),
+        Map({
+          id: 2,
+          "location": "bedroom 1",
+          "count": 2,
+          "name": "king_bed"
+        }),
+        Map({
+          id: 3,
+          "location": "bedroom 2",
+          "count": 2,
+          "name": "single_bed"
+        })
+      ]),
+      // "beds": List([]),
+      "bathrooms_count": 2,
       "bathrooms": List([
         Map({
           shower: true,
