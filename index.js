@@ -16,39 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({ origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE'] }))
 
-app.get(
-  '/onboarding/v1/onboardings/:uiid',
-  (req, res) => {
-    console.log('>>>> Get all for: ', req.params);
-    res.status(200).json(data.toJS());
-  }
-);
-
-app.put(
-  '/onboarding/v1/onboardings/:uiid/location', (req, res) => {
-    console.log('>>>> Update location', req.body.location);
-    data = data.setIn('location', req.body.location);
-    res.status(200).json({ location: req.body.location });
-  })
-
-app.put(
-  '/onboarding/v1/onboardings/:uiid', (req, res) => {
-    const { field } = req.body;
-    const path = ['data'].concat(field.resource.split('.'), field.column);
-    console.log('>>>> Update field', req.body, path);
-    data = data.setIn(path, field.value);
-    res.status(200).json({ field });
-  })
-app.use(errorHandling);
-
-app.listen(PORT, HOST, () => {
-  console.log(`Server listing on ${HOST}:${PORT}`);
-});
-
-
-
-var data = Map({
-  "location": "/info/1",
+let data = Map({
+  "current_location": "/info/1",
   "enabled": true,
   "codelist": {
     "amenities": [{
@@ -649,36 +618,28 @@ var data = Map({
         "name": "London"
       },
       {
-        "id": 5,
-        "name": "London"
-      },
-      {
-        "id": 6,
-        "name": "London"
-      },
-      {
         "id": 2,
         "name": "Paris"
       },
       {
         "id": 4,
         "name": "Singapore"
+      },
+      {
+        "id": 5,
+        "name": "Other"
       }
     ],
-    "bed_types": [
-      "Queen bed",
-      "King bed",
-      "Single bed",
-      "Double bed",
-      "Single sofa bed",
-      "Double sofa bed",
-      "Single air bed",
-      "Double air bed"
+    bed_types: [
+      { value: 'queen_bed', label: 'Queen bed' },
+      { value: 'king_bed', label: 'King bed' },
+      { value: 'single_bed', label: 'Single bed' },
     ],
     "property_types": [
       "Studio",
       "Flat",
-      "House"
+      "House",
+      "Other",
     ],
     "bed_locations": [
       "bedroom 1",
@@ -704,7 +665,7 @@ var data = Map({
       "minimum_nightly_price": null,
       "host_info_observation": null,
       "bank_details": {
-        "country": "uk", 
+        "country": "uk",
         "account_number": "123456",
         "swift": "222333",
         "observation":"",
@@ -712,31 +673,31 @@ var data = Map({
     }),
     "property": Map({
       "id": 9,
-      "property_type": "flat",
-      "personal_residency": false,
-      "property_type_observation": "Totam dolor eos harum est dolorem deleniti at.",
-      "city": "london",
-      "address_1": "6382 Torp Ridges",
-      "floor": null,
-      "flat_number": null,
-      "post_code": "28596",
-      "address_observation": null,
-      "building_direction": "Minima hic eum consequatur maxime consectetur aut sit facilis.",
-      "flat_direction": "Ut repudiandae magni suscipit.",
-      "additional_comment": null,
-      "intercom": null,
-      "alarm": null,
-      "alarm_description": null,
-      "lock": null,
-      "doors_lock_when_closed": false,
-      "lock_observation": null,
-      "set_of_keys": null,
-      "keys_description": "Dont lose the keys!",
-      "all_keys_tested": null,
-      "keys_observation": null,
-      "closest_station_1": "Náměstí Míru",
-      "parking_nearby": false,
-      "transport_observation": null,
+      /* done */ "property_type": "Flat",
+      /* done */ "personal_residency": false,
+      /* done */ "property_type_observation": "Totam dolor eos harum est dolorem deleniti at.",
+      /* done */ "city": "london",
+      /* done */ "address_1": "6382 Torp Ridges",
+      /* done */ "floor": null,
+      /* done */ "flat_number": null,
+      /* done */ "post_code": "28596",
+      /* done */ "address_observation": null,
+      /* done */ "building_direction": "Minima hic eum consequatur maxime consectetur aut sit facilis.",
+      /* done */ "flat_direction": "Ut repudiandae magni suscipit.",
+      "additional_comment": null, // Maybe, "Please specify the property type?
+      /* done */ "intercom": null,
+      /* done */ "alarm": null,
+      /* done */ "alarm_description": null,
+      /* done */ "lock": null,
+      /* done */ "doors_lock_when_closed": false,
+      /* done */ "lock_observation": null,
+      /* done */ "set_of_keys": null,
+      /* done */ "keys_description": "Dont lose the keys!",
+      /* done */ "all_keys_tested": null,
+      /* done */ "keys_observation": null,
+      /* done */ "closest_station_1": "Náměstí Míru",
+      /* done */ "parking_nearby": false,
+      /* done */ "transport_observation": null,
       "size": "150m2",
       "max_guest_number": 8,
       "size_observation": "Eius similique impedit ipsam sit beatae.",
@@ -748,20 +709,54 @@ var data = Map({
       "bedrooms_observation": "Magni nihil minus tempore at ut voluptatem maxime.",
       "bathrooms_instruction": "Est et quidem necessitatibus ex aspernatur molestiae.",
       "bathrooms_observation": "Eius non voluptatem impedit excepturi.",
-      "keys_per_set": 2,
-      "elevator": null,
-      "getting_in_observation": null,
-      "lock_description": null,
-      "getting_out_observation": null,
-      "nearby_parking_description": null,
+      /* done */ "keys_per_set": 2,
+      /* done */ "elevator": null,
+      /* done */ "getting_in_observation": null,
+      /* done */ "lock_description": null,
+      /* done */ "getting_out_observation": null,
+      /* done */ "nearby_parking_description": null,
       "general_observation": null,
       "laundry_observation": null,
       "safety_observation": null,
       "heating_and_cooling_observation": null,
       "kitchen_appliances_observation": "Odit quia aut nihil amet animi nobis quasi est.",
       "kitchen_amenities_observation": "Debitis eos rerum nemo et placeat ut et.",
+      "bedrooms_count": 0,
+      // "beds": List([
+      //   Map({
+      //     id: 1,
+      //     "location": "bedroom 1",
+      //     "count": 1,
+      //     "name": "queen_bed"
+      //   }),
+      //   Map({
+      //     id: 2,
+      //     "location": "bedroom 1",
+      //     "count": 2,
+      //     "name": "king_bed"
+      //   }),
+      //   Map({
+      //     id: 3,
+      //     "location": "bedroom 2",
+      //     "count": 2,
+      //     "name": "single_bed"
+      //   })
+      // ]),
       "beds": List([]),
-      "bathrooms": List([]),
+      "bathrooms": List([
+        Map({
+          shower: true,
+          bathtub: false,
+          toilet: false,
+          hairdryer: true,
+        }),
+        Map({
+          shower: false,
+          bathtub: true,
+          toilet: true,
+          hairdryer: false,
+        }),
+      ]),
       "property_amenities": List([]),
       "additional_infos": Map({
         "specific_rules": "No smoking",
@@ -805,4 +800,34 @@ var data = Map({
     })
   }),
   "status": "opened"
+});
+
+app.get(
+  '/onboarding/v1/onboardings/:uiid',
+  (req, res) => {
+    console.log('>>>> Get all for: ', req.params);
+    console.log('>>>> current_location: ', data.get('current_location'));
+    res.status(200).json(data.toJS());
+  }
+);
+
+app.put(
+  '/onboarding/v1/onboardings/:uiid/location', (req, res) => {
+    console.log('>>>> Update location', req.body.location);
+    data = data.set('current_location', req.body.location);
+    res.status(200).json({ current_location: data.get('current_location') });
+  })
+
+app.put(
+  '/onboarding/v1/onboardings/:uiid', (req, res) => {
+    const { field } = req.body;
+    const path = ['data'].concat(field.resource.split('.'), field.column);
+    console.log('>>>> Update field', req.body, path);
+    data = data.setIn(path, field.value);
+    res.status(200).json({ field });
+  })
+app.use(errorHandling);
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server listing on ${HOST}:${PORT}`);
 });
