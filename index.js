@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
-const { Map, List } = require('immutable');
+const { Map, List, fromJS } = require('immutable');
 
 const { errorHandling, originValidation } = require('./src/middlewares');
 
@@ -686,7 +686,11 @@ let data = Map({
       /* done */ "flat_direction": "Ut repudiandae magni suscipit.",
       "additional_comment": null, // Maybe, "Please specify the property type?
       /* done */ "intercom": null,
+      /* done */ intercom_code: null,
+      /* done */ intercom_location: null,
       /* done */ "alarm": null,
+      /* done */ digicode: null,
+      /* done */ alarm_location: null,
       /* done */ "alarm_description": null,
       /* done */ "lock": null,
       /* done */ "doors_lock_when_closed": false,
@@ -698,17 +702,17 @@ let data = Map({
       /* done */ "closest_station_1": "Náměstí Míru",
       /* done */ "parking_nearby": false,
       /* done */ "transport_observation": null,
-      "size": "150m2",
-      "max_guest_number": 8,
-      "size_observation": "Eius similique impedit ipsam sit beatae.",
-      "wifi_name": "Tiger",
-      "wifi_password": "UmUtNpC84rXtQ9Xa",
-      "wifi_router_location": "Omnis aliquid quaerat non voluptatem numquam.",
-      "wifi_observation": "Dolorem commodi ipsam ut laudantium aliquam.",
-      "pillows_for_all_beds": null,
-      "bedrooms_observation": "Magni nihil minus tempore at ut voluptatem maxime.",
-      "bathrooms_instruction": "Est et quidem necessitatibus ex aspernatur molestiae.",
-      "bathrooms_observation": "Eius non voluptatem impedit excepturi.",
+      /* done */ "size": "150m2",
+      /* done */ "max_guests_number": 8,
+      /* done */ "size_observation": "Eius similique impedit ipsam sit beatae.",
+      /* done */ "wifi_name": "Tiger",
+      /* done */ "wifi_password": "UmUtNpC84rXtQ9Xa",
+      /* done */ "wifi_router_location": "Omnis aliquid quaerat non voluptatem numquam.",
+      /* done */ "wifi_observation": "Dolorem commodi ipsam ut laudantium aliquam.",
+      /* done */ "pillows_for_all_beds": null,
+      /* done */ "bedrooms_observation": "Magni nihil minus tempore at ut voluptatem maxime.",
+      /* done */ "bathrooms_instruction": "Est et quidem necessitatibus ex aspernatur molestiae.",
+      /* done */ "bathrooms_observation": "Eius non voluptatem impedit excepturi.",
       /* done */ "keys_per_set": 2,
       /* done */ "elevator": null,
       /* done */ "getting_in_observation": null,
@@ -746,12 +750,14 @@ let data = Map({
       "bathrooms_count": 2,
       "bathrooms": List([
         Map({
+          id: 1,
           shower: true,
           bathtub: false,
           toilet: false,
           hairdryer: true,
         }),
         Map({
+          id: 2,
           shower: false,
           bathtub: true,
           toilet: true,
@@ -793,10 +799,10 @@ let data = Map({
         "maintenance_observation": null
       }),
       "nearby": Map({
-        "supermarkets_and_shops": "Albert",
-        "cafe_or_restaurant": "Ubulinu",
-        "points_of_interest": "Park",
-        "observation": "Some observation"
+        /* done */ "supermarkets_and_shops": "Albert",
+        /* done */ "cafe_or_restaurant": "Ubulinu",
+        /* done */ "points_of_interest": "Park",
+        /* done */ "observation": "Some observation"
       })
     })
   }),
@@ -826,6 +832,21 @@ app.put(
     console.log('>>>> Update field', req.body, path);
     data = data.setIn(path, field.value);
     res.status(200).json({ field });
+  })
+
+app.post(
+  '/onboarding/v1/onboardings/:uiid/bedrooms', (req, res) => {
+    data = data.setIn(['data', 'property', 'beds'], fromJS(req.body.bedrooms.map((bed, i) => ({ ...bed, id: bed.id || i + 1 }))));
+    const bedrooms = data.getIn(['data', 'property', 'beds']);
+    console.log('>>>> Update bedrooms', bedrooms);
+    res.status(200).json(bedrooms);
+  })
+
+app.delete(
+  '/onboarding/v1/onboardings/:uiid/bedrooms/:id', (req, res) => {
+    const bedrooms = data.getIn(['data', 'property', 'beds']);
+    console.log('>>>> Delete bedroom', req.params.id, bedrooms);
+    res.status(200).json(bedrooms);
   })
 app.use(errorHandling);
 
