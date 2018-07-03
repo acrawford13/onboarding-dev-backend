@@ -848,6 +848,21 @@ app.delete(
     console.log('>>>> Delete bedroom', req.params.id, bedrooms);
     res.status(200).json(bedrooms);
   })
+
+app.post(
+  '/onboarding/v1/onboardings/:uiid/bathrooms', (req, res) => {
+    data = data.setIn(['data', 'property', 'bathrooms'], fromJS(req.body.bathrooms.map((bed, i) => ({ ...bed, id: bed.id || i + 1 }))));
+    const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
+    console.log('>>>> Update bathrooms', bathrooms);
+    res.status(200).json(bathrooms);
+  })
+
+app.delete(
+  '/onboarding/v1/onboardings/:uiid/bathrooms/:id', (req, res) => {
+    const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
+    console.log('>>>> Delete bathroom', req.params.id, bathrooms);
+    res.status(200).json(bathrooms);
+  })
 app.use(errorHandling);
 
 app.listen(PORT, HOST, () => {
