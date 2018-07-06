@@ -723,8 +723,8 @@ let data = Map({
       "laundry_observation": null,
       "safety_observation": null,
       "heating_and_cooling_observation": null,
-      "kitchen_appliances_observation": "Odit quia aut nihil amet animi nobis quasi est.",
-      "kitchen_amenities_observation": "Debitis eos rerum nemo et placeat ut et.",
+      /* done */ "kitchen_appliances_observation": "Odit quia aut nihil amet animi nobis quasi est.",
+      /* done */ "kitchen_amenities_observation": "Debitis eos rerum nemo et placeat ut et.",
       "bedrooms_count": 2,
       "beds": List([
         Map({
@@ -827,7 +827,7 @@ app.put(
 
 app.put(
   '/onboarding/v1/onboardings/:uiid', (req, res) => {
-    const { field } = req.body;
+    const { data: field } = req.body;
     const path = ['data'].concat(field.resource.split('.'), field.column);
     console.log('>>>> Update field', req.body, path);
     data = data.setIn(path, field.value);
@@ -862,6 +862,21 @@ app.delete(
     const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
     console.log('>>>> Delete bathroom', req.params.id, bathrooms);
     res.status(200).json(bathrooms);
+  })
+
+app.post(
+  '/onboarding/v1/onboardings/:uiid/amenities', (req, res) => {
+    data = data.setIn(['data', 'property', 'property_amenities'], fromJS(req.body.amenities.map((amenity, i) => ({ ...amenity, id: amenity.id || i + 1 }))));
+    const amenities = data.getIn(['data', 'property', 'property_amenities']);
+    console.log('>>>> Update amenities', amenities);
+    res.status(200).json(amenities);
+  })
+
+app.delete(
+  '/onboarding/v1/onboardings/:uiid/amenities/:id', (req, res) => {
+    const amenities = data.getIn(['data', 'property', 'property_amenities']);
+    console.log('>>>> Delete amenity', req.params.id, amenities);
+    res.status(200).json(amenities);
   })
 app.use(errorHandling);
 
