@@ -659,24 +659,25 @@ let data = Map({
     "host": Map({
       "name": "Joe Doe",
       "email": "joe.doe@example.com",
-      "phone": "+420 776 182 312",
+      "mobile_phone": "+420 776 182 312",
       "contact": null,
       "alternative_contact": null,
       "minimum_nightly_price": null,
       "host_info_observation": null,
-      "bank_details": {
+      "bank_account": {
         "country": "uk",
         "account_number": "123456",
         "swift": "222333",
         "observation":"",
-      }
+      },
+      "bank_account_observation": '',
     }),
     "property": Map({
       "id": 9,
       /* done */ "property_type": "Flat",
       /* done */ "personal_residency": false,
       /* done */ "property_type_observation": "Totam dolor eos harum est dolorem deleniti at.",
-      /* done */ "city": "london",
+      /* done */ "city_id": 1,
       /* done */ "address_1": "6382 Torp Ridges",
       /* done */ "floor": null,
       /* done */ "flat_number": null,
@@ -731,19 +732,22 @@ let data = Map({
           id: 1,
           "location": "bedroom 1",
           "count": 1,
-          "name": "queen_bed"
+          "name": "queen_bed",
+          property_id: 9,
         }),
         Map({
           id: 2,
           "location": "bedroom 1",
           "count": 2,
-          "name": "king_bed"
+          "name": "king_bed",
+          property_id: 9,
         }),
         Map({
           id: 3,
           "location": "bedroom 2",
           "count": 2,
-          "name": "single_bed"
+          "name": "single_bed",
+          property_id: 9,
         })
       ]),
       // "beds": List([]),
@@ -755,6 +759,7 @@ let data = Map({
           bathtub: false,
           toilet: false,
           hairdryer: true,
+          property_id: 9,
         }),
         Map({
           id: 2,
@@ -762,6 +767,7 @@ let data = Map({
           bathtub: true,
           toilet: true,
           hairdryer: false,
+          property_id: 9,
         }),
       ]),
       "property_amenities": List([]),
