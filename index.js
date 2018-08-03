@@ -1001,6 +1001,14 @@ let data = fromJS(
 )
 
 app.get(
+  '/onboarding/v1/health_check',
+  (req, res) => {
+    console.log('>>>> healthCheck');
+    res.status(200).json(true);
+  }
+);
+
+app.get(
   '/onboarding/v1/onboardings/:uiid',
   (req, res) => {
     console.log('>>>> Get all for: ', req.params);
