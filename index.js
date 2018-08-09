@@ -1015,7 +1015,7 @@ app.get(
 );
 
 app.get(
-  '/onboarding/v1/onboardings/:uiid',
+  '/:locale/onboarding/v1/onboardings/:uiid',
   (req, res) => {
     console.log('>>>> Get all for: ', req.params);
     console.log('>>>> current_location: ', data.get('current_location'));
@@ -1024,7 +1024,7 @@ app.get(
 );
 
 app.put(
-  '/onboarding/v1/onboardings/:uiid/finish', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/finish', (req, res) => {
     console.log('>>>> Finish Form');
     // data = data.set('status', 'finished');
     setTimeout(() => {
@@ -1033,14 +1033,14 @@ app.put(
   })
 
 app.put(
-  '/onboarding/v1/onboardings/:uiid/location', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/location', (req, res) => {
     console.log('>>>> Update location', req.body.location);
     data = data.set('current_location', req.body.location);
     res.status(200).json({ current_location: data.get('current_location') });
   })
 
 app.put(
-  '/onboarding/v1/onboardings/:uiid', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid', (req, res) => {
     const { data: field } = req.body;
     const path = ['data'].concat(field.resource.split('.'), field.column);
     console.log('>>>> Update field', req.body, path);
@@ -1049,7 +1049,7 @@ app.put(
   })
 
 app.post(
-  '/onboarding/v1/onboardings/:uiid/bedrooms', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/bedrooms', (req, res) => {
     data = data.setIn(['data', 'property', 'beds'], fromJS(req.body.bedrooms.map((bed, i) => ({ ...bed, id: bed.id || i + 1 }))));
     const bedrooms = data.getIn(['data', 'property', 'beds']);
     console.log('>>>> Update bedrooms', bedrooms);
@@ -1057,14 +1057,14 @@ app.post(
   })
 
 app.delete(
-  '/onboarding/v1/onboardings/:uiid/bedrooms/:id', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/bedrooms/:id', (req, res) => {
     const bedrooms = data.getIn(['data', 'property', 'beds']);
     console.log('>>>> Delete bedroom', req.params.id, bedrooms);
     res.status(200).json(bedrooms);
   })
 
 app.post(
-  '/onboarding/v1/onboardings/:uiid/bathrooms', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/bathrooms', (req, res) => {
     data = data.setIn(['data', 'property', 'bathrooms'], fromJS(req.body.bathrooms.map((bed, i) => ({ ...bed, id: bed.id || i + 1 }))));
     const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
     console.log('>>>> Update bathrooms', bathrooms);
@@ -1072,14 +1072,14 @@ app.post(
   })
 
 app.delete(
-  '/onboarding/v1/onboardings/:uiid/bathrooms/:id', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/bathrooms/:id', (req, res) => {
     const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
     console.log('>>>> Delete bathroom', req.params.id, bathrooms);
     res.status(200).json(bathrooms);
   })
 
 app.post(
-  '/onboarding/v1/onboardings/:uiid/amenities', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/amenities', (req, res) => {
     data = data.setIn(['data', 'property', 'property_amenities'], fromJS(req.body.amenities.map((amenity, i) => ({ ...amenity, id: amenity.id || i + 1 }))));
     const amenities = data.getIn(['data', 'property', 'property_amenities']);
     console.log('>>>> Update amenities', amenities);
@@ -1087,7 +1087,7 @@ app.post(
   })
 
 app.delete(
-  '/onboarding/v1/onboardings/:uiid/amenities/:id', (req, res) => {
+  '/:locale/onboarding/v1/onboardings/:uiid/amenities/:id', (req, res) => {
     const amenities = data.getIn(['data', 'property', 'property_amenities']);
     console.log('>>>> Delete amenity', req.params.id, amenities);
     res.status(200).json(amenities);
