@@ -18,7 +18,7 @@ app.use(cors({ origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE'] }))
 
 let data = fromJS(
 {
-  current_location: "",
+  current_location: "/info/1",
   status: "started",
   enabled: true,
   codelist: {
@@ -734,9 +734,9 @@ let data = fromJS(
       { label: "Other", value: "other" },
     ],
     bed_locations: [
-      { value: "bedroom 1", label: "quarto 1" },
-      { value: "bedroom 2", label: "quarto 2" },
-      { value: "bedroom 3", label: "quarto 3" },
+      { value: "bedroom 1", label: "Quarto 1" },
+      { value: "bedroom 2", label: "Quarto 2" },
+      { value: "bedroom 3", label: "Quarto 3" },
       { value: "bedroom 4", label: "bedroom 4" },
       { value: "bedroom 5", label: "bedroom 5" },
       { value: "bedroom 6", label: "bedroom 6" },
@@ -1023,13 +1023,16 @@ app.get(
   }
 );
 
+// let tryies = 0;
 app.put(
   '/:locale/onboarding/v1/onboardings/:uiid/finish', (req, res) => {
     console.log('>>>> Finish Form');
-    // data = data.set('status', 'finished');
-    setTimeout(() => {
-      res.status(402).json(true);
-    }, 5000)
+    data = data.set('status', 'finished');
+    // setTimeout(() => {
+    //   tryies++
+    //   res.status((tryies < 4 && 500) || 200).json(true);
+    // }, 0)
+    res.status(200).json(true);
   })
 
 app.put(
