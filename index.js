@@ -799,6 +799,7 @@ let data = fromJS(
     personal_residency: true,
     property_type_observation: null,
     city_id: 3,
+    // city_id: null,
     address_1: "lalala",
     floor: 12,
     flat_number: "12",
@@ -1005,6 +1006,14 @@ let data = fromJS(
     }
   }
 )
+
+app.get(
+  '/v1/health_check',
+  (req, res) => {
+    console.log('>>>> healthCheck');
+    res.status(200).json(true);
+  }
+);
 
 app.get(
   '/onboarding/v1/health_check',
