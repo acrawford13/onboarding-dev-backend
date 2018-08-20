@@ -18,6 +18,7 @@ app.use(cors({ origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE'] }))
 
 let data = fromJS(
   {
+    "status": "not_opened",
    "codelist":{
       "transport_methods":[
          {
