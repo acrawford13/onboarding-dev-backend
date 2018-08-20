@@ -88,6 +88,7 @@ let data = fromJS(
       ]
    },
    "data":{
+      "guest_name": "Stallone",
       "additional_info":"Some thing here",
       "arrival_vehicle_number":"XX666",
       "arrival_vehicle_type":"boat",
@@ -124,13 +125,6 @@ app.get(
   }
 );
 
-app.get(
-  '/onboarding/v1/health_check',
-  (req, res) => {
-    console.log('>>>> healthCheck');
-    res.status(200).json(true);
-  }
-);
 
 app.get(
   '/:locale/onboarding/v1/onboardings/:uiid',
@@ -141,78 +135,15 @@ app.get(
   }
 );
 
-// let tryies = 0;
-app.put(
-  '/:locale/onboarding/v1/onboardings/:uiid/finish', (req, res) => {
-    console.log('>>>> Finish Form');
-    data = data.set('status', 'finished');
-    // setTimeout(() => {
-    //   tryies++
-    //   res.status((tryies < 4 && 500) || 200).json(true);
-    // }, 0)
-    res.status(200).json(true);
-  })
-
-app.put(
-  '/:locale/onboarding/v1/onboardings/:uiid/location', (req, res) => {
-    console.log('>>>> Update location', req.body.location);
-    data = data.set('current_location', req.body.location);
-    res.status(200).json({ current_location: data.get('current_location') });
-  })
-
 app.put(
   '/:locale/onboarding/v1/onboardings/:uiid', (req, res) => {
     const { data: field } = req.body;
-    const path = ['data'].concat(field.resource.split('.'), field.column);
+    const path = ['data'].concat(field.resource.split('.'), field.column).filter(path => path);
     console.log('>>>> Update field', req.body, path);
     data = data.setIn(path, field.value);
     res.status(200).json({ field });
   })
 
-app.post(
-  '/:locale/onboarding/v1/onboardings/:uiid/bedrooms', (req, res) => {
-    data = data.setIn(['data', 'property', 'beds'], fromJS(req.body.bedrooms.map((bed, i) => ({ ...bed, id: bed.id || i + 1 }))));
-    const bedrooms = data.getIn(['data', 'property', 'beds']);
-    console.log('>>>> Update bedrooms', bedrooms);
-    res.status(200).json(bedrooms);
-  })
-
-app.delete(
-  '/:locale/onboarding/v1/onboardings/:uiid/bedrooms/:id', (req, res) => {
-    const bedrooms = data.getIn(['data', 'property', 'beds']);
-    console.log('>>>> Delete bedroom', req.params.id, bedrooms);
-    res.status(200).json(bedrooms);
-  })
-
-app.post(
-  '/:locale/onboarding/v1/onboardings/:uiid/bathrooms', (req, res) => {
-    data = data.setIn(['data', 'property', 'bathrooms'], fromJS(req.body.bathrooms.map((bed, i) => ({ ...bed, id: bed.id || i + 1 }))));
-    const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
-    console.log('>>>> Update bathrooms', bathrooms);
-    res.status(200).json(bathrooms);
-  })
-
-app.delete(
-  '/:locale/onboarding/v1/onboardings/:uiid/bathrooms/:id', (req, res) => {
-    const bathrooms = data.getIn(['data', 'property', 'bathrooms']);
-    console.log('>>>> Delete bathroom', req.params.id, bathrooms);
-    res.status(200).json(bathrooms);
-  })
-
-app.post(
-  '/:locale/onboarding/v1/onboardings/:uiid/amenities', (req, res) => {
-    data = data.setIn(['data', 'property', 'property_amenities'], fromJS(req.body.amenities.map((amenity, i) => ({ ...amenity, id: amenity.id || i + 1 }))));
-    const amenities = data.getIn(['data', 'property', 'property_amenities']);
-    console.log('>>>> Update amenities', amenities);
-    res.status(200).json(amenities);
-  })
-
-app.delete(
-  '/:locale/onboarding/v1/onboardings/:uiid/amenities/:id', (req, res) => {
-    const amenities = data.getIn(['data', 'property', 'property_amenities']);
-    console.log('>>>> Delete amenity', req.params.id, amenities);
-    res.status(200).json(amenities);
-  })
 app.use(errorHandling);
 
 app.listen(PORT, HOST, () => {
