@@ -118,7 +118,7 @@ let data = fromJS(
 });
 
 app.get(
-  '/v1/health_check',
+  '/api/internal/health_check',
   (req, res) => {
     console.log('>>>> healthCheck');
     res.status(200).json(true);
