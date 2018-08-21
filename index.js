@@ -127,7 +127,7 @@ app.get(
 
 
 app.get(
-  '/:locale/onboarding/v1/onboardings/:uiid',
+  '/:locale/check_in_info/v1/guest_form/:uiid',
   (req, res) => {
     console.log('>>>> Get all for: ', req.params);
     console.log('>>>> current_location: ', data.get('current_location'));
@@ -136,7 +136,7 @@ app.get(
 );
 
 app.put(
-  '/:locale/onboarding/v1/onboardings/:uiid', (req, res) => {
+  '/:locale/check_in_info/v1/guest_form/:uiid', (req, res) => {
     const { data: field } = req.body;
     const path = ['data'].concat(field.resource.split('.'), field.column).filter(path => path);
     console.log('>>>> Update field', req.body, path);
